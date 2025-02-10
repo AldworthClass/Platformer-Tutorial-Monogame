@@ -10,8 +10,10 @@ namespace Platformer_Tutorial_Monogame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        KeyboardState keyboardState, prevKeyboardState;
+
         Texture2D rectangleTexture;
-        Rectangle rectangle;
+        Rectangle player;
         Vector2 speed;
 
         List<Rectangle> platforms;
@@ -27,7 +29,7 @@ namespace Platformer_Tutorial_Monogame
         {
             // TODO: Add your initialization logic here
             speed = Vector2.Zero;
-            rectangle = new Rectangle( 10, 10, 50, 50);
+            player = new Rectangle( 10, 10, 50, 50);
             platforms = new List<Rectangle>();
             platforms.Add(new Rectangle(0, 400, 800, 20));
 
@@ -45,10 +47,20 @@ namespace Platformer_Tutorial_Monogame
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            prevKeyboardState = keyboardState;
+            keyboardState = Keyboard.GetState();
 
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                Exit();
+            speed = Vector2.Zero;
+            if (keyboardState.IsKeyDown(Keys.A))
+                speed.X += -1f;
+            if (keyboardState.IsKeyDown(Keys.D))
+                speed.X += 1f;
+            
+            
             // TODO: Add your update logic here
+            player.Offset(speed);
 
             base.Update(gameTime);
         }
@@ -60,7 +72,7 @@ namespace Platformer_Tutorial_Monogame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(rectangleTexture, rectangle, Color.Red);
+            _spriteBatch.Draw(rectangleTexture, player, Color.Red);
             foreach (Rectangle platform in platforms)
                 _spriteBatch.Draw(rectangleTexture, platform, Color.Black);
 
