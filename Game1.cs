@@ -93,13 +93,22 @@ namespace Platformer_Tutorial_Monogame
             // Vertical Movement
 
             if (!onGround)
+            {
                 speed.Y += gravity;
-
-            if (keyboardState.IsKeyDown(Keys.Space) && onGround)
+                if (speed.Y < 0 && keyboardState.IsKeyUp(Keys.Space)) // ends jump early if space is not pressed
+                    speed.Y /= 1.5f;
+                
+            }
+            else if (keyboardState.IsKeyDown(Keys.Space) && onGround)
             {
                 speed.Y = -jumpSpeed;
                 onGround = false;
             }
+            else if (onGround)
+            {
+                speed.Y += gravity;
+            }
+           
 
 
             // TODO: Add your update logic here
@@ -123,6 +132,7 @@ namespace Platformer_Tutorial_Monogame
 
 
                 }
+                
             player.Location = playerPosition.ToPoint();
 
             foreach(Rectangle platform in platforms)
