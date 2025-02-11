@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace Platformer_Tutorial_Monogame
 {
+    public enum PlayerState
+    {
+        OnGround,
+        Jumping,
+        Falling
+    }
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -14,7 +20,14 @@ namespace Platformer_Tutorial_Monogame
 
         Texture2D rectangleTexture;
         Rectangle player;
+        Vector2 playerPosition;
         Vector2 speed;
+
+        float gravity = 0.3f;
+        float jumpSpeed = 8f;
+
+        bool onGround = true;
+
 
         List<Rectangle> platforms;
 
@@ -29,9 +42,16 @@ namespace Platformer_Tutorial_Monogame
         {
             // TODO: Add your initialization logic here
             speed = Vector2.Zero;
-            player = new Rectangle( 10, 10, 50, 50);
+            playerPosition = new Vector2(10, 10);
+            player = new Rectangle(10, 10, 50, 50);
             platforms = new List<Rectangle>();
             platforms.Add(new Rectangle(0, 400, 800, 20));
+            platforms.Add(new Rectangle(100, 350, 100, 20));
+            platforms.Add(new Rectangle(350, 250, 75, 20));
+            //platforms.Add(new Rectangle(0, 400, 800, 20));
+            //platforms.Add(new Rectangle(0, 400, 800, 20));
+
+
 
             base.Initialize();
 
@@ -52,15 +72,60 @@ namespace Platformer_Tutorial_Monogame
 
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
-            speed = Vector2.Zero;
+
+            // Horizontal Movement
+            speed.X = 0f;
             if (keyboardState.IsKeyDown(Keys.A))
-                speed.X += -1f;
+                speed.X += -2f;
             if (keyboardState.IsKeyDown(Keys.D))
-                speed.X += 1f;
-            
-            
+                speed.X += 2f;
+
+            playerPosition.X += speed.X;
+            player.Location = playerPosition.ToPoint();
+            foreach (Rectangle platform in platforms)
+                if (player.Intersects(platform))
+                {
+                    playerPosition.X -= speed.X;
+                    player.Location = playerPosition.ToPoint();
+                }
+
+
+            // Vertical Movement
+
+            if (!onGround)
+                speed.Y += gravity;
+
+            if (keyboardState.IsKeyDown(Keys.Space) && onGround)
+            {
+                speed.Y = -jumpSpeed;
+                onGround = false;
+            }
+
+
             // TODO: Add your update logic here
-            player.Offset(speed);
+            playerPosition.Y += speed.Y;
+            player.Location = playerPosition.ToPoint();
+            foreach (Rectangle platform in platforms)
+                if (player.Intersects(platform)) // Player hits platform
+                {
+                    if (speed.Y > 0f)// player lands on platform
+                    {
+                        onGround = true;
+                        speed.Y = 0;
+                        playerPosition.Y = platform.Y - player.Height;// Set player on platform
+                    }
+                    else // hits bottom of platform
+                    {
+                        speed.Y = 0;
+                        playerPosition.Y = platform.Bottom;
+                    }
+                    player.Location = playerPosition.ToPoint();
+
+
+                }
+            player.Location = playerPosition.ToPoint();
+
+            foreach(Rectangle platform in platforms)
 
             base.Update(gameTime);
         }
