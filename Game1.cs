@@ -51,9 +51,6 @@ namespace Platformer_Tutorial_Monogame
             platforms.Add(new Rectangle(200, 300, 75, 20));
             platforms.Add(new Rectangle(150, 10, 75, 20));
 
-
-
-
             base.Initialize();
 
         }
