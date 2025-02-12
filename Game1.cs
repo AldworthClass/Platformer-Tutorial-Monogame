@@ -26,7 +26,7 @@ namespace Platformer_Tutorial_Monogame
         float gravity = 0.3f;
         float jumpSpeed = 8f;
 
-        bool onGround = true;
+        bool onGround = false;
 
 
         List<Rectangle> platforms;
@@ -45,11 +45,12 @@ namespace Platformer_Tutorial_Monogame
             playerPosition = new Vector2(10, 10);
             player = new Rectangle(10, 10, 50, 50);
             platforms = new List<Rectangle>();
-            platforms.Add(new Rectangle(0, 400, 800, 20));
-            platforms.Add(new Rectangle(100, 350, 100, 20));
+            platforms.Add(new Rectangle(0, 400, 800, 20));  // Ground
+            platforms.Add(new Rectangle(100, 350, 100, 20)); 
             platforms.Add(new Rectangle(350, 250, 75, 20));
-            //platforms.Add(new Rectangle(0, 400, 800, 20));
-            //platforms.Add(new Rectangle(0, 400, 800, 20));
+            platforms.Add(new Rectangle(200, 300, 75, 20));
+            platforms.Add(new Rectangle(150, 10, 75, 20));
+
 
 
 
@@ -85,7 +86,7 @@ namespace Platformer_Tutorial_Monogame
             foreach (Rectangle platform in platforms)
                 if (player.Intersects(platform))
                 {
-                    playerPosition.X -= speed.X;
+                    playerPosition.X += -speed.X;
                     player.Location = playerPosition.ToPoint();
                 }
 
@@ -135,7 +136,6 @@ namespace Platformer_Tutorial_Monogame
                 
             player.Location = playerPosition.ToPoint();
 
-            foreach(Rectangle platform in platforms)
 
             base.Update(gameTime);
         }
