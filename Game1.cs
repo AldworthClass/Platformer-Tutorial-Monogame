@@ -93,20 +93,20 @@ namespace Platformer_Tutorial_Monogame
             if (!onGround)
             {
                 speed.Y += gravity;
-                if (speed.Y < 0 && keyboardState.IsKeyUp(Keys.Space)) // ends jump early if space is not pressed
-                    speed.Y /= 1.5f;
-                
+                //if (speed.Y < 0 && keyboardState.IsKeyUp(Keys.Space)) // ends jump early if space is not pressed
+                //    speed.Y /= 1.5f;
+
             }
-            else if (keyboardState.IsKeyDown(Keys.Space) && onGround)
-            {
-                speed.Y = -jumpSpeed;
-                onGround = false;
-            }
-            else if (onGround)
-            {
-                speed.Y += gravity;
-            }
-           
+            //else if (keyboardState.IsKeyDown(Keys.Space) && onGround)
+            //{
+            //    speed.Y = -jumpSpeed;
+            //    onGround = false;
+            //}
+            //else
+            //{
+            //    speed.Y += gravity;
+            //}
+
 
 
             // TODO: Add your update logic here
@@ -127,8 +127,6 @@ namespace Platformer_Tutorial_Monogame
                         playerPosition.Y = platform.Bottom;
                     }
                     player.Location = playerPosition.ToPoint();
-
-
                 }
                 
             player.Location = playerPosition.ToPoint();
