@@ -97,11 +97,11 @@ namespace Platformer_Tutorial_Monogame
                 //    speed.Y /= 1.5f;
 
             }
-            //else if (keyboardState.IsKeyDown(Keys.Space) && onGround)
-            //{
-            //    speed.Y = -jumpSpeed;
-            //    onGround = false;
-            //}
+            else if (keyboardState.IsKeyDown(Keys.Space) && onGround)
+            {
+                speed.Y = -jumpSpeed;
+                onGround = false;
+            }
             //else
             //{
             //    speed.Y += gravity;
@@ -129,7 +129,6 @@ namespace Platformer_Tutorial_Monogame
                     player.Location = playerPosition.ToPoint();
                 }
                 
-            player.Location = playerPosition.ToPoint();
 
 
             base.Update(gameTime);
